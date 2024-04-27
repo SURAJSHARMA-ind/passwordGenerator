@@ -21,8 +21,8 @@ function App() {
     for (let i = 0; i < passLength; i++) {
       let index = Math.floor(Math.random() * str.length );
       pass = pass + str.charAt(index)
-      setPass(pass)
     }
+    setPass(pass)
   }
 
   useEffect(() => {
