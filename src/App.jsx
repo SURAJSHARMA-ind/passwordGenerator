@@ -9,21 +9,38 @@ function App() {
   const passRef =useRef()
 
   const passgenerator = () => {
-    let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    let str = alphabets;
-    let pass = ""
-    if (number) {
-      str += "0123456789"
-    }
-    if (special) {
-      str += "./?!@#$%^&*|\/><"
-    }
-    for (let i = 0; i < passLength; i++) {
-      let index = Math.floor(Math.random() * str.length );
-      pass += str.charAt(index)
-    }
-    setPass(pass)
+  let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  let str = alphabets;
+  let pass = "";
+  let numCount = 0; // Variable to count the number of numbers in the password
+  if (number) {
+    str += "0123456789";
   }
+  if (special) {
+    str += "./?!@#$%^&*|\\/><";
+  }
+  for (let i = 0; i < passLength; i++) {
+    let index = Math.floor(Math.random() * str.length);
+    let char = str.charAt(index);
+    if (number && /[0-9]/.test(char)) {
+      numCount++;
+    }
+    pass += char;
+  }
+  // Ensure at least three numbers in the password if 'number' is selected
+  if (number && numCount < 3) {
+    const missingNumbers = 3 - numCount;
+    for (let i = 0; i < missingNumbers; i++) {
+      let index = Math.floor(Math.random() * pass.length); // Random position to insert the number
+      while (/[0-9]/.test(pass.charAt(index))) {
+        // Ensure we are not replacing a number with another number
+        index = Math.floor(Math.random() * pass.length);
+      }
+      pass = pass.slice(0, index) + Math.floor(Math.random() * 10) + pass.slice(index + 1);
+    }
+  }
+  setPass(pass);
+};
 
   useEffect(() => {
     passgenerator()
